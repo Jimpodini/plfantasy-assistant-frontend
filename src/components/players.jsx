@@ -20,8 +20,7 @@ class Players extends Component {
 		players: [],
 		pageSize: 40,
 		currentPage: 1,
-		searchQuery: '',
-		rotowireLineups: 'empty'
+		searchQuery: ''
 	};
 
 	getPlayers = () => {
@@ -50,23 +49,26 @@ class Players extends Component {
 	async componentDidMount() {
 		// these are independent and should be run concurrently
 		let players = await this.getPlayers();
-		const rotowireLineups = await this.getLineups();
-		this.setState({ rotowireLineups });
+		const rotowireLineups = await this.getLineupRotowire();
+		const fantasyScoutLineups = await this.getLineupFantasyScout();
 
 		players = players.data;
-		players.map((player) => this.setPlayerAttributes(player));
+		players.map((player) => this.setPlayerAttributes(player, rotowireLineups, fantasyScoutLineups));
 		this.setState({ players });
 
-		//console.log(this.willStart('games', 'games'));
+		// console.log(fantasyScoutLineups);
+		// console.log(this.willStart('title="Ozil', 'title="Ozil', fantasyScoutLineups));
 	}
 
-	getLineups = () => {
+	getLineupRotowire = () => {
 		return rp(proxyUrl + url);
 	};
 
-	willStart = (team, name) => {
-		const { rotowireLineups } = this.state;
+	getLineupFantasyScout = () => {
+		return rp(proxyUrl + 'https://www.fantasyfootballscout.co.uk/team-news/');
+	};
 
+	willStart = (team, name, rotowireLineups) => {
 		if (rotowireLineups.includes(`${team}`)) {
 			if (rotowireLineups.includes(`${name}`)) {
 				//return 'Yes';
@@ -80,7 +82,7 @@ class Players extends Component {
 		}
 	};
 
-	setPlayerAttributes = (player) => {
+	setPlayerAttributes = (player, rotowireLineups, fantasyScoutLineups) => {
 		player['full_name'] = player.first_name + ' ' + player.second_name;
 
 		const teamName = teams[player.team - 1].oddsName;
@@ -90,9 +92,15 @@ class Players extends Component {
 		const oddsIndex = index === 0 ? 0 : 2;
 		player['odds_to_win_next_match'] = getGames(teamName)[0].sites[0].odds.h2h[oddsIndex];
 
-		// player['will_start'] = this.willStart(teamName, player.second_name);
+		player['will_start'] = this.willStart(teamName, player.second_name, rotowireLineups);
 
-		player['will_start'] = this.willStart('games', 'games');
+		player['will_start_fantasy_scout'] = this.willStart(
+			teamName,
+			`title="${player.second_name}`,
+			fantasyScoutLineups
+		);
+
+		//player['will_start'] = this.willStart('games', 'games', rotowireLineups);
 	};
 
 	handlePageChange = (page) => {
@@ -135,7 +143,11 @@ class Players extends Component {
 								<th>Name</th>
 								<th>Team</th>
 								<th>Odds to win next game</th>
-								<th>Starter</th>
+								<th className="hoverWrapper">
+									Starter
+									<div id="hoverShow1">1) this is shown only on hover</div>
+								</th>
+								<th>Starter scout</th>
 								<th />
 							</tr>
 						</thead>
@@ -146,6 +158,7 @@ class Players extends Component {
 									<td>{player.team_name}</td>
 									<td>{player.odds_to_win_next_match}</td>
 									<td>{player.will_start}</td>
+									<td>{player.will_start_fantasy_scout}</td>
 									<td>
 										<Like liked={player.liked} onClick={() => this.handleLike(player)} />
 									</td>
