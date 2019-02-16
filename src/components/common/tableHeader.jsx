@@ -1,13 +1,9 @@
 import React from 'react';
 
-const TableHeader = () => {
+const TableHeader = ({ columns }) => {
 	return (
 		<thead>
-			<tr>
-				<th>First name</th>
-				<th>Last name</th>
-				<th />
-			</tr>
+			<tr>{columns.map((column) => <th key={column.key}>{column.title}</th>)}</tr>
 		</thead>
 	);
 };

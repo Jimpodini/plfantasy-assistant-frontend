@@ -14,17 +14,3 @@ code {
 .navbar {
 	margin-bottom: 30px;
 }
-
-.hoverWrapper:hover #hoverShow1 {
-	display: block;
-}
-
-.hoverWrapper #hoverShow1 {
-	display: none;
-	position: absolute;
-	background-color: #ff0000;
-	width: 250px;
-	height: 250px;
-	left: 200px;
-	top: 100px;
-}
