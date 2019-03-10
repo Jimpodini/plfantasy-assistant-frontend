@@ -1,32 +1,25 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import logo from '/Users/ellencecilia/Documents/plfantasy/src/pictures/Premier_League_Logo.svg.png';
 
 const NavBar = () => {
 	return (
-		<nav className="navbar navbar-expand-lg navbar-light bg-light">
-			<Link className="navbar-brand" to="/">
-				PL Fantasy
+		<nav className="navbar navbar-expand-lg" style={{ position: 'relative', backgroundColor: '#29163A' }}>
+			<Link className="navbar-brand" to="/" style={{ color: 'white', fontWeight: 'bold' }}>
+				<img src={logo} className="d-inline-block align-top" alt="" />
 			</Link>
-			<button
-				className="navbar-toggler"
-				type="button"
-				data-toggle="collapse"
-				data-target="#navbarNav"
-				aria-controls="navbarNav"
-				aria-expanded="false"
-				aria-label="Toggle navigation"
+			<p
+				style={{
+					position: 'absolute',
+					left: '85%',
+					top: '70%',
+					fontWeight: 'bold',
+					float: 'right',
+					color: 'white'
+				}}
 			>
-				<span className="navbar-toggler-icon" />
-			</button>
-			<div className="collapse navbar-collapse" id="navbarNav">
-				<ul className="navbar-nav">
-					<li className="nav-item active">
-						<NavLink className="nav-link" to="/">
-							All players
-						</NavLink>
-					</li>
-				</ul>
-			</div>
+				Fantasy Assistant
+			</p>
 		</nav>
 	);
 };

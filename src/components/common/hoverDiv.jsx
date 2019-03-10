@@ -23,10 +23,11 @@ class HoverDiv extends Component {
 		let styles = {
 			backgroundColor: 'gray',
 			border: '1px solid black',
-			padding: '2px',
 			fontWeight: 'normal',
 			position: 'absolute',
-			fontSize: '12px'
+			fontSize: '12px',
+			borderRadius: '10px',
+			padding: '5px'
 		};
 
 		return (

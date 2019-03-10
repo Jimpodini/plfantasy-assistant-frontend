@@ -13,4 +13,30 @@ code {
 
 .navbar {
 	margin-bottom: 30px;
+	background-color: purple;
+}
+
+.active {
+	background-color: #b185b5;
+	color: white;
+	font-weight: bold;
+}
+
+/* doesn't work */
+.active :hover {
+	background-color: #b185b5;
+}
+
+.wideColumn {
+	width: 230px;
+}
+
+#container {
+	display: grid;
+	grid-template-columns: repeat(12, 1fr);
+}
+
+#container,
+* {
+	grid-column: 1 / 13;
 }

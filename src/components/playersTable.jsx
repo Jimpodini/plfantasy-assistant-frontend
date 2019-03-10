@@ -7,7 +7,14 @@ class PlayersTable extends Component {
 	columns = [
 		{ key: 'name', title: 'Name', path: 'full_name' },
 		{ key: 'team', title: 'Team', path: 'team_name' },
-		{ key: 'odds', title: 'Odds', path: 'odds_to_win_next_match' },
+		{ key: 'position', title: 'Position', path: 'position' },
+		{ key: 'price', title: 'Price (£)', path: 'now_cost' },
+		{ key: 'ict_index', title: 'ICT Index', path: 'ict_index' },
+		{
+			key: 'odds',
+			title: <HoverDiv text="Odds" hoverText="Source: Bet365" />,
+			path: 'odds_to_win_next_match'
+		},
 		{
 			key: 'starter_1',
 			title: <HoverDiv text="Starter 1" hoverText="Source: https://www.rotowire.com/soccer/lineups.php" />,
@@ -25,9 +32,9 @@ class PlayersTable extends Component {
 	];
 
 	render() {
-		const { players } = this.props;
+		const { players, onSort, sortColumn } = this.props;
 
-		return <Table data={players} columns={this.columns} />;
+		return <Table data={players} columns={this.columns} sortColumn={sortColumn} onSort={onSort} />;
 	}
 }
 

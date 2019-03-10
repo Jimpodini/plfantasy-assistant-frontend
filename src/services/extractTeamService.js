@@ -5,78 +5,78 @@ export const teams = [
 	},
 	{
 		oddsName: 'Bournemouth',
-		rotowireName: 'Arsenal'
+		rotowireName: 'Bournemouth'
 	},
 	{
 		oddsName: 'Brighton and Hove Albion',
-		rotowireName: 'Arsenal'
+		rotowireName: 'Brighton & Hove Albion'
 	},
 	{
 		oddsName: 'Burnley',
-		rotowireName: 'Arsenal'
+		rotowireName: 'Burnley'
 	},
 	{
 		oddsName: 'Cardiff City',
-		rotowireName: 'Arsenal'
+		rotowireName: 'Cardiff City'
 	},
 	{
 		oddsName: 'Chelsea',
-		rotowireName: 'Arsenal'
+		rotowireName: 'Chelsea'
 	},
 	{
 		oddsName: 'Crystal Palace',
-		rotowireName: 'Arsenal'
+		rotowireName: 'Crystal Palace'
 	},
 	{
 		oddsName: 'Everton',
-		rotowireName: 'Arsenal'
+		rotowireName: 'Everton'
 	},
 	{
 		oddsName: 'Fulham',
-		rotowireName: 'Arsenal'
+		rotowireName: 'Fulham'
 	},
 	{
 		oddsName: 'Huddersfield Town',
-		rotowireName: 'Arsenal'
+		rotowireName: 'Huddersfield Town'
 	},
 	{
 		oddsName: 'Leicester City',
-		rotowireName: 'Arsenal'
+		rotowireName: 'Leicester City'
 	},
 	{
 		oddsName: 'Liverpool',
-		rotowireName: 'Arsenal'
+		rotowireName: 'Liverpool'
 	},
 	{
 		oddsName: 'Manchester City',
-		rotowireName: 'Arsenal'
+		rotowireName: 'Manchester City'
 	},
 	{
 		oddsName: 'Manchester United',
-		rotowireName: 'Arsenal'
+		rotowireName: 'Manchester United'
 	},
 	{
 		oddsName: 'Newcastle United',
-		rotowireName: 'Arsenal'
+		rotowireName: 'Newcastle United'
 	},
 	{
 		oddsName: 'Southampton',
-		rotowireName: 'Arsenal'
+		rotowireName: 'Southampton'
 	},
 	{
 		oddsName: 'Tottenham Hotspur',
-		rotowireName: 'Arsenal'
+		rotowireName: 'Tottenham Hotspur'
 	},
 	{
 		oddsName: 'Watford',
-		rotowireName: 'Arsenal'
+		rotowireName: 'Watford'
 	},
 	{
 		oddsName: 'West Ham United',
-		rotowireName: 'Arsenal'
+		rotowireName: 'West Ham United'
 	},
 	{
 		oddsName: 'Wolverhampton Wanderers',
-		rotowireName: 'Arsenal'
+		rotowireName: 'Wolverhampton'
 	}
 ];

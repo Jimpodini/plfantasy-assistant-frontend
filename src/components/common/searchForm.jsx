@@ -9,7 +9,7 @@ const SearchForm = ({ value, onSearch, style }) => {
 			type="text"
 			className="form-control my-3"
 			id="searchInput"
-			placeholder="Search player.."
+			placeholder="Search player or team.."
 		/>
 	);
 };

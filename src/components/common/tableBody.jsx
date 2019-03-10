@@ -22,7 +22,9 @@ class TableBody extends Component {
 				{data.map((item) => (
 					<tr key={item.id}>
 						{columns.map((column) => (
-							<td key={this.createKey(item, column)}>{this.renderCell(item, column)}</td>
+							<td style={{ whiteSpace: 'nowrap', overflow: 'hidden' }} key={this.createKey(item, column)}>
+								{this.renderCell(item, column)}
+							</td>
 						))}
 						{/* <td>{player.full_name}</td>
 						<td>{player.team_name}</td>
