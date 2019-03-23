@@ -1,4 +1,6 @@
 import axios from 'axios';
+
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 //import logger from "./logService";
 //import { toast } from "react-toastify";
 

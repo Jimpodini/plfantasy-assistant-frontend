@@ -17,9 +17,9 @@ class TableHeader extends Component {
 		const { sortColumn } = this.props;
 		if (sortColumn.path === column.path) {
 			if (sortColumn.order === 'desc') {
-				return <i className="fa fa-sort-desc" aria-hidden="true" />;
+				return <i className="fa fa-sort-desc" style={{ display: 'inline-block' }} aria-hidden="true" />;
 			} else {
-				return <i className="fa fa-sort-asc" aria-hidden="true" />;
+				return <i className="fa fa-sort-asc" style={{ display: 'inline-block' }} aria-hidden="true" />;
 			}
 		} else {
 			return null;
@@ -32,11 +32,11 @@ class TableHeader extends Component {
 				<tr>
 					{this.props.columns.map((column) => (
 						<th
-							className={column.title === 'Team' || column.title === 'Name' ? 'wideColumn' : ''}
+							style={{ whiteSpace: 'nowrap' }}
 							onClick={() => this.raiseSort(column.path)}
 							key={column.key}
 						>
-							{column.title}
+							<span style={{ display: 'inline-block' }}>{column.title}</span>
 							{this.renderSortIcon(column)}
 						</th>
 					))}

@@ -21,19 +21,20 @@ class HoverDiv extends Component {
 
 	render() {
 		let styles = {
-			backgroundColor: 'gray',
+			backgroundColor: '#F2F1F1',
 			border: '1px solid black',
 			fontWeight: 'normal',
 			position: 'absolute',
 			fontSize: '12px',
 			borderRadius: '10px',
-			padding: '5px'
+			padding: '5px',
+			whiteSpace: 'pre-wrap'
 		};
 
 		return (
 			<div>
-				<div onMouseEnter={this.handleMouseHover} onMouseLeave={this.handleMouseHover}>
-					{this.props.text}
+				<div onMouseOver={this.handleMouseHover} onMouseOut={this.handleMouseHover}>
+					<a style={this.props.style}>{this.props.text}</a>
 				</div>
 				{this.state.isHovering && <div style={styles}>{this.props.hoverText}</div>}
 			</div>

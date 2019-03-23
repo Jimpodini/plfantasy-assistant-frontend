@@ -4,12 +4,52 @@ import Like from './common/like';
 import HoverDiv from './common/hoverDiv';
 
 class PlayersTable extends Component {
+	iconStyle = {
+		display: 'inline-block',
+		width: '10px',
+		height: '10px',
+		borderRadius: '50%'
+	};
+
+	textStyle = {
+		display: 'inline-block',
+		margin: '0px',
+		marginLeft: '2px'
+	};
+
 	columns = [
 		{ key: 'name', title: 'Name', path: 'full_name' },
 		{ key: 'team', title: 'Team', path: 'team_name' },
 		{ key: 'position', title: 'Position', path: 'position' },
 		{ key: 'price', title: 'Price (£)', path: 'now_cost' },
 		{ key: 'ict_index', title: 'ICT Index', path: 'ict_index' },
+		{
+			key: 'avg_difficulty',
+			title: (
+				<HoverDiv
+					text="Avg. difficulty"
+					hoverText={
+						<React.Fragment>
+							<div>
+								<div style={{ ...this.iconStyle, backgroundColor: '#baffc9' }} />
+								<p style={this.textStyle}>Double gameweek</p>
+							</div>
+							<div>
+								<div style={{ ...this.iconStyle, backgroundColor: '#ffdfba' }} />
+
+								<p style={this.textStyle}>Ambigious</p>
+							</div>
+							<div>
+								<div style={{ ...this.iconStyle, backgroundColor: '#ffb3ba' }} />
+
+								<p style={this.textStyle}>Missing gameweek</p>
+							</div>
+						</React.Fragment>
+					}
+				/>
+			),
+			path: 'avg_difficulty'
+		},
 		{
 			key: 'odds',
 			title: <HoverDiv text="Odds" hoverText="Source: Bet365" />,

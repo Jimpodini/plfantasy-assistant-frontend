@@ -17,6 +17,8 @@ const url = 'https://www.rotowire.com/soccer/lineups.php';
 class Players extends Component {
 	state = {
 		players: [],
+		fixtures: [],
+		fiveNextGameweeks: [],
 		pageSize: 40,
 		currentPage: 1,
 		searchQuery: '',
@@ -27,7 +29,7 @@ class Players extends Component {
 
 	async populateOdds() {
 		try {
-			http.post('http://localhost:3900/api/odds');
+			http.post('/odds');
 			console.log('populateOdds called');
 		} catch (ex) {
 			console.log(ex.message);
@@ -71,15 +73,34 @@ class Players extends Component {
 			const playersPromise = this.getPlayers();
 			const rotowireLineupsPromise = this.getLineupRotowire();
 			const fantasyScoutLineupsPromise = this.getLineupFantasyScout();
-			const latestUpdatePromise = http.get('http://localhost:3900/api/updates');
+			const fixturesPromise = http.get('https://fantasy.premierleague.com/drf/fixtures/');
+			const latestUpdatePromise = http.get('/updates');
 			//const oddsPromise = this.getOdds();
 
-			let [ players, rotowireLineups, fantasyScoutLineups, latestUpdate ] = await Promise.all([
+			let [ players, rotowireLineups, fantasyScoutLineups, fixtures, latestUpdate ] = await Promise.all([
 				playersPromise,
 				rotowireLineupsPromise,
 				fantasyScoutLineupsPromise,
+				fixturesPromise,
 				latestUpdatePromise
 			]);
+
+			fixtures = fixtures.data;
+			let fiveNextGameweeks = [];
+
+			//console.log(fixtures);
+			const fixturesUpcoming = fixtures.filter(
+				(fixture) => fixture.started === false && fixture.event_day != null
+			);
+
+			for (let i = 0; i < fixturesUpcoming.length; i++) {
+				const teamFixture = fixturesUpcoming[i];
+
+				const gameWeek = teamFixture.deadline_time_formatted;
+				if (!fiveNextGameweeks.includes(gameWeek) && fiveNextGameweeks.length < 5) {
+					fiveNextGameweeks = [ ...fiveNextGameweeks, gameWeek ];
+				}
+			}
 
 			//console.log(latestUpdate.data.lastUpdated);
 
@@ -96,13 +117,22 @@ class Players extends Component {
 
 			if (!oddsUpdatedToday) this.populateOdds();
 
-			const odds = await http.get('http://localhost:3900/api/odds');
+			const odds = await http.get('/odds');
 
 			players = players.data;
 			// players.map((player) => this.setPlayerAttributes(player, rotowireLineups, fantasyScoutLineups, odds));
-			players.map((player) => this.setPlayerAttributes(player, rotowireLineups, fantasyScoutLineups, odds));
+			players.map((player) =>
+				this.setPlayerAttributes(
+					player,
+					rotowireLineups,
+					fantasyScoutLineups,
+					odds,
+					fiveNextGameweeks,
+					fixtures
+				)
+			);
 
-			this.setState({ players, isLoading: false });
+			this.setState({ players, fixtures, fiveNextGameweeks, isLoading: false });
 		} catch (err) {
 			console.log(err.message);
 		}
@@ -130,7 +160,97 @@ class Players extends Component {
 		}
 	};
 
-	async setPlayerAttributes(player, rotowireLineups, fantasyScoutLineups, odds) {
+	setFiveNextGameweeks = (player, fiveNextGameweeks, fixtures) => {
+		// const fixtures = this.state.fixtures.filter(
+		// 	(fixture) => fixture.started === false && fixture.event_day != null
+		// );
+
+		//let formattedFixtures = [];
+
+		const teamID = player.team;
+
+		let teamNextFiveGames = [];
+		let i = 1;
+
+		let doubleGameweek = false;
+		let missingGameweek = false;
+
+		fiveNextGameweeks.forEach((gw) => {
+			const game = fixtures.filter(
+				(fixture) =>
+					fixture.deadline_time_formatted === gw && (fixture.team_a === teamID || fixture.team_h === teamID)
+			);
+
+			if (game.length === 0) {
+				missingGameweek = true;
+				teamNextFiveGames = [
+					...teamNextFiveGames,
+					{ gameWeekNr: 'GW' + i, opponent: 'No game', difficulty: 10, missingGameweek, doubleGameweek }
+				];
+			} else {
+				if (game.length > 1) doubleGameweek = true;
+				//const opponentID = game[0].team_h === 1 ? game[0].team_a : game[0].team_h;
+				game.forEach((g) => {
+					let opponentID;
+					let difficultyLevel;
+
+					if (g.team_h === teamID) {
+						opponentID = g.team_a;
+						difficultyLevel = g.team_h_difficulty;
+					} else {
+						opponentID = g.team_h;
+						difficultyLevel = g.team_a_difficulty;
+					}
+
+					teamNextFiveGames = [
+						...teamNextFiveGames,
+						{
+							gameWeekNr: 'GW' + i,
+							opponent: teams[opponentID - 1].oddsName,
+							difficulty: difficultyLevel,
+							missingGameweek,
+							doubleGameweek
+						}
+					];
+				});
+			}
+
+			i++;
+		});
+
+		if (teamNextFiveGames.length > 0) {
+			let sum = 0;
+			let count = 0;
+			let gamesInfo = '';
+
+			teamNextFiveGames.forEach((game) => {
+				sum += game.difficulty;
+				count += 1;
+				gamesInfo += '(' + game.gameWeekNr + ') ' + game.opponent + ' - ' + game.difficulty + '\n';
+			});
+
+			const averageDifficulty = (sum / count).toFixed(1);
+
+			let styling = { borderRadius: '50%', border: 'solid black 1px', padding: '5px' };
+			if (doubleGameweek && missingGameweek) {
+				styling.backgroundColor = '#ffdfba';
+			} else if (doubleGameweek) {
+				styling.backgroundColor = '#baffc9';
+			} else if (missingGameweek) {
+				styling.backgroundColor = '#ffb3ba';
+			}
+
+			// const averageDifficulty =
+			// 	teamNextFiveGames.reduce((total, number) => total + number) / teamNextFiveGames.length;
+			//console.log(gamesInfo);
+			player['avg_difficulty'] = averageDifficulty;
+			player['double_gameweek'] = doubleGameweek;
+			player['styling'] = styling;
+			player['games_info'] = gamesInfo;
+		}
+	};
+
+	async setPlayerAttributes(player, rotowireLineups, fantasyScoutLineups, odds, fiveNextGameweeks, fixtures) {
 		player['full_name'] = player.first_name + ' ' + player.second_name;
 
 		const teamNameOddsAPI = teams[player.team - 1].oddsName;
@@ -186,6 +306,7 @@ class Players extends Component {
 		// 	//player['odds_to_win_next_match'] = getGames(teamNameOddsAPI)[0].sites[0].odds.h2h[index];
 		// 	player['odds_to_win_next_match'] = bet365odds;
 		// }
+		this.setFiveNextGameweeks(player, fiveNextGameweeks, fixtures);
 
 		const teamNameRotowire = teams[player.team - 1].rotowireName;
 		player['will_start_rotowire'] = this.willStart(teamNameRotowire, player.second_name, rotowireLineups);

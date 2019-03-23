@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
+import HoverDiv from '../common/hoverDiv';
 
 class TableBody extends Component {
 	renderCell(item, column) {
@@ -22,18 +23,22 @@ class TableBody extends Component {
 				{data.map((item) => (
 					<tr key={item.id}>
 						{columns.map((column) => (
-							<td style={{ whiteSpace: 'nowrap', overflow: 'hidden' }} key={this.createKey(item, column)}>
-								{this.renderCell(item, column)}
+							<td
+								//onMouseOver={() => console.log(item.games_info)}
+								style={{ whiteSpace: 'nowrap', overflow: 'hidden', width: 'auto' }}
+								key={this.createKey(item, column)}
+							>
+								{column.key === 'avg_difficulty' ? (
+									<HoverDiv
+										text={this.renderCell(item, column)}
+										hoverText={item.games_info}
+										style={item.styling}
+									/>
+								) : (
+									this.renderCell(item, column)
+								)}
 							</td>
 						))}
-						{/* <td>{player.full_name}</td>
-						<td>{player.team_name}</td>
-						<td>{player.odds_to_win_next_match}</td>
-						<td>{player.will_start}</td>
-						<td>{player.will_start_fantasy_scout}</td>
-						<td>
-							<Like liked={player.liked} onClick={() => this.handleLike(player)} />
-						</td> */}
 					</tr>
 				))}
 			</tbody>
