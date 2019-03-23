@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import logo from '/Users/ellencecilia/Documents/plfantasy/src/pictures/Premier_League_Logo.svg.png';
+import logo from '../pictures/Premier_League_Logo.svg.png';
 
 const NavBar = () => {
 	return (
