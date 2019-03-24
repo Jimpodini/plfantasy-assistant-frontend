@@ -73,7 +73,7 @@ class Players extends Component {
 			const playersPromise = this.getPlayers();
 			const rotowireLineupsPromise = this.getLineupRotowire();
 			const fantasyScoutLineupsPromise = this.getLineupFantasyScout();
-			const fixturesPromise = http.get('https://fantasy.premierleague.com/drf/fixtures/');
+			const fixturesPromise = http.get(proxyUrl + 'https://fantasy.premierleague.com/drf/fixtures/');
 			const latestUpdatePromise = http.get('/updates');
 			//const oddsPromise = this.getOdds();
 
@@ -135,6 +135,7 @@ class Players extends Component {
 			this.setState({ players, fixtures, fiveNextGameweeks, isLoading: false });
 		} catch (err) {
 			console.log(err.message);
+			console.log(err);
 		}
 	}
 
