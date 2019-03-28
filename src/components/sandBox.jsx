@@ -10,9 +10,16 @@ const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 class SandBox extends Component {
 	render() {
 		return (
-			<div>
-				<div style={{ display: 'inline-block', width: '100px', height: '100px', backgroundColor: 'blue' }} />
-				<div style={{ display: 'inline-block', width: '100px', height: '100px', backgroundColor: 'red' }} />
+			<div style={{ position: 'relative', height: '100%', border: '1px solid black' }}>
+				<div
+					style={{
+						display: 'grid',
+						margin: 'auto',
+						width: '100px',
+						height: '100px',
+						backgroundColor: 'blue'
+					}}
+				/>
 			</div>
 		);
 	}

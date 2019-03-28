@@ -7,6 +7,7 @@ import { teams } from '../services/extractTeamService';
 import PlayersTable from './playersTable';
 import _ from 'lodash';
 import LoadingSpinner from './common/loadingSpinner';
+import Dropdown from 'react-bootstrap/Dropdown';
 const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 const apiUrl = 'https://fantasy.premierleague.com/drf/elements/';
 const apiTeamsUrl = 'https://fantasy.premierleague.com/drf/teams/';
@@ -24,7 +25,8 @@ class Players extends Component {
 		searchQuery: '',
 		sortColumn: { path: 'full_name', order: 'asc' },
 		filterLiked: false,
-		isLoading: true
+		isLoading: true,
+		filter: 'All players'
 	};
 
 	async populateOdds() {
@@ -46,7 +48,7 @@ class Players extends Component {
 
 	getPagedData = () => {
 		// items, pageNumber, pageSize
-		const { pageSize, currentPage, players: allPlayers, searchQuery, filterLiked } = this.state;
+		const { pageSize, currentPage, players: allPlayers, searchQuery, filterLiked, filter } = this.state;
 
 		let filtered = allPlayers;
 
@@ -60,6 +62,10 @@ class Players extends Component {
 
 		if (filterLiked) {
 			filtered = filtered.filter((player) => player.liked);
+		}
+
+		if (filter !== 'All players') {
+			filtered = filtered.filter((player) => player.position === filter);
 		}
 
 		let sorted = _.orderBy(filtered, [ this.state.sortColumn.path ], [ this.state.sortColumn.order ]);
@@ -286,7 +292,7 @@ class Players extends Component {
 			case 3:
 				position = 'MID';
 				break;
-			case 4:
+			default:
 				position = 'FWD';
 				break;
 		}
@@ -327,6 +333,10 @@ class Players extends Component {
 		this.setState({ currentPage: page });
 	};
 
+	handleFilter = (filter) => {
+		this.setState({ filter });
+	};
+
 	handleSearch = (query) => {
 		this.setState({ searchQuery: query, currentPage: 1 });
 	};
@@ -364,11 +374,36 @@ class Players extends Component {
 
 		return (
 			<div id="container">
-				<SearchForm style={{ gridColumn: '1/10' }} value={searchQuery} onSearch={this.handleSearch} />
-				<button onClick={() => this.filterLiked()} style={{ gridColumn: '10/13', margin: '10px' }}>
-					Liked players <i style={{ color: 'red' }} className={this.renderLikeFilter()} aria-hidden="true" />
-				</button>
+				<div style={{ gridColumn: '1/7' }}>
+					<SearchForm value={searchQuery} onSearch={this.handleSearch} />
+				</div>
+				<div style={{ gridColumn: '7/10', display: 'grid' }}>
+					<Dropdown style={{ margin: 'auto' }}>
+						<Dropdown.Toggle
+							variant="secondary"
+							id="dropdown-basic"
+							style={{ width: '250px', height: '40px' }}
+						>
+							{this.state.filter}
+						</Dropdown.Toggle>
 
+						<Dropdown.Menu>
+							<Dropdown.Item onClick={() => this.handleFilter('GK')}>Goalkeepers</Dropdown.Item>
+							<Dropdown.Item onClick={() => this.handleFilter('DEF')}>Defenders</Dropdown.Item>
+							<Dropdown.Item onClick={() => this.handleFilter('MID')}>Midfielders</Dropdown.Item>
+							<Dropdown.Item onClick={() => this.handleFilter('FWD')}>Forwards</Dropdown.Item>
+						</Dropdown.Menu>
+					</Dropdown>
+				</div>
+				<div style={{ gridColumn: '10/13', display: 'grid' }}>
+					<button
+						style={{ height: '40px', width: '250px', margin: 'auto' }}
+						onClick={() => this.filterLiked()}
+					>
+						Liked players{' '}
+						<i style={{ color: 'red' }} className={this.renderLikeFilter()} aria-hidden="true" />
+					</button>
+				</div>
 				<div style={{ margin: 'auto' }}>
 					<Pagination
 						pageSize={pageSize}
@@ -378,14 +413,12 @@ class Players extends Component {
 						onPageChange={this.handlePageChange}
 					/>
 				</div>
-
 				<PlayersTable
 					players={players}
 					onLike={this.handleLike}
 					sortColumn={sortColumn}
 					onSort={this.handleSort}
 				/>
-
 				<LoadingSpinner isLoading={this.state.isLoading} />
 			</div>
 		);

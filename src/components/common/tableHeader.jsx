@@ -28,20 +28,34 @@ class TableHeader extends Component {
 
 	render() {
 		return (
-			<thead>
-				<tr>
-					{this.props.columns.map((column) => (
-						<th
-							style={{ whiteSpace: 'nowrap' }}
-							onClick={() => this.raiseSort(column.path)}
-							key={column.key}
-						>
-							<span style={{ display: 'inline-block' }}>{column.title}</span>
-							{this.renderSortIcon(column)}
-						</th>
-					))}
-				</tr>
-			</thead>
+			<React.Fragment>
+				<colgroup>
+					<col style={{ width: '15%' }} />
+					<col style={{ width: '12%' }} />
+					<col style={{ width: '7%' }} />
+					<col style={{ width: '7%' }} />
+					<col style={{ width: '7%' }} />
+					<col style={{ width: '10%' }} />
+					<col style={{ width: '5%' }} />
+					<col style={{ width: '8%' }} />
+					<col style={{ width: '8%' }} />
+					<col style={{ width: '5%' }} />
+				</colgroup>
+				<thead>
+					<tr>
+						{this.props.columns.map((column) => (
+							<th
+								style={{ whiteSpace: 'nowrap' }}
+								onClick={() => this.raiseSort(column.path)}
+								key={column.key}
+							>
+								<span style={{ display: 'inline-block' }}>{column.title}</span>
+								{this.renderSortIcon(column)}
+							</th>
+						))}
+					</tr>
+				</thead>
+			</React.Fragment>
 		);
 	}
 }
