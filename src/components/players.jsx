@@ -388,6 +388,7 @@ class Players extends Component {
 						</Dropdown.Toggle>
 
 						<Dropdown.Menu>
+							<Dropdown.Item onClick={() => this.handleFilter('All players')}>All players</Dropdown.Item>
 							<Dropdown.Item onClick={() => this.handleFilter('GK')}>Goalkeepers</Dropdown.Item>
 							<Dropdown.Item onClick={() => this.handleFilter('DEF')}>Defenders</Dropdown.Item>
 							<Dropdown.Item onClick={() => this.handleFilter('MID')}>Midfielders</Dropdown.Item>
