@@ -8,6 +8,8 @@ import PlayersTable from './playersTable';
 import _ from 'lodash';
 import LoadingSpinner from './common/loadingSpinner';
 import Dropdown from 'react-bootstrap/Dropdown';
+
+import MyTeamForm from './myTeamForm';
 const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 const apiUrl = 'https://fantasy.premierleague.com/drf/elements/';
 const apiTeamsUrl = 'https://fantasy.premierleague.com/drf/teams/';
@@ -16,6 +18,11 @@ const rp = require('request-promise');
 const url = 'https://www.rotowire.com/soccer/lineups.php';
 
 class Players extends Component {
+	constructor(props) {
+		super(props);
+
+		this.handleTeamFilter = this.handleTeamFilter.bind(this);
+	}
 	state = {
 		players: [],
 		fixtures: [],
@@ -26,7 +33,8 @@ class Players extends Component {
 		sortColumn: { path: 'full_name', order: 'asc' },
 		filterLiked: false,
 		isLoading: true,
-		filter: 'All players'
+		filter: 'All players',
+		teamFilter: []
 	};
 
 	async populateOdds() {
@@ -48,7 +56,7 @@ class Players extends Component {
 
 	getPagedData = () => {
 		// items, pageNumber, pageSize
-		const { pageSize, currentPage, players: allPlayers, searchQuery, filterLiked, filter } = this.state;
+		const { pageSize, currentPage, players: allPlayers, searchQuery, filterLiked, filter, teamFilter } = this.state;
 
 		let filtered = allPlayers;
 
@@ -66,6 +74,10 @@ class Players extends Component {
 
 		if (filter !== 'All players') {
 			filtered = filtered.filter((player) => player.position === filter);
+		}
+
+		if (teamFilter.length !== 0) {
+			filtered = filtered.filter((player) => teamFilter.includes(player.id));
 		}
 
 		let sorted = _.orderBy(filtered, [ this.state.sortColumn.path ], [ this.state.sortColumn.order ]);
@@ -337,6 +349,15 @@ class Players extends Component {
 		this.setState({ filter });
 	};
 
+	async handleTeamFilter(username, password) {
+		try {
+			const myTeam = await http.get('/myteam', { params: { username: username, password: password } });
+			this.setState({ teamFilter: myTeam.data.playerIds });
+		} catch (err) {
+			console.log(err);
+		}
+	}
+
 	handleSearch = (query) => {
 		this.setState({ searchQuery: query, currentPage: 1 });
 	};
@@ -374,8 +395,11 @@ class Players extends Component {
 
 		return (
 			<div id="container">
-				<div style={{ gridColumn: '1/7' }}>
+				<div style={{ gridColumn: '1/5' }}>
 					<SearchForm value={searchQuery} onSearch={this.handleSearch} />
+				</div>
+				<div style={{ gridColumn: '5/7', display: 'grid' }}>
+					<MyTeamForm onLogin={this.handleTeamFilter} />
 				</div>
 				<div style={{ gridColumn: '7/10', display: 'grid' }}>
 					<Dropdown style={{ margin: 'auto' }}>
