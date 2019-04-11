@@ -45,24 +45,55 @@ class MyTeamForm extends Component {
 		this.handleClose();
 	}
 
-	render() {
-		return (
-			<React.Fragment>
-				<Button
-					variant="secondary"
-					onClick={this.handleShow}
-					style={{
-						// backgroundColor: '#29163A',
-						// borderColor: '#b185b5',
-						height: '40px',
-						width: '150px',
-						margin: 'auto'
-					}}
-				>
-					My team
-				</Button>
+	handleLogout = () => {
+		this.handleClose();
+		this.props.onLogout();
+	};
 
-				<Modal show={this.state.show} onHide={this.handleClose}>
+	handleTeamClick = () => {
+		if (!this.props.loggedIn) {
+			this.handleShow();
+		} else {
+			this.props.toggleTeamFilter();
+		}
+	};
+
+	renderModal(isLoggedIn) {
+		if (isLoggedIn) {
+			return (
+				<React.Fragment>
+					<Modal.Header closeButton>
+						<Modal.Title style={{ fontSize: '20px' }}>My team name</Modal.Title>
+					</Modal.Header>
+					<Modal.Body>
+						<div className="m-1">Team details</div>
+						<Button
+							variant="secondary"
+							style={{ float: 'right', margin: '0px 5px 0px 5px' }}
+							onClick={this.handleClose}
+						>
+							Close
+						</Button>
+						<Button
+							variant="primary"
+							style={{
+								backgroundColor: '#29163A',
+								borderColor: '#b185b5',
+								float: 'right',
+								margin: '0px 5px 0px 5px'
+							}}
+							type="submit"
+							onClick={this.handleLogout}
+						>
+							Logout
+						</Button>
+					</Modal.Body>
+					<Modal.Footer />
+				</React.Fragment>
+			);
+		} else {
+			return (
+				<React.Fragment>
 					<Modal.Header closeButton>
 						<Modal.Title style={{ fontSize: '20px' }}>
 							Sign in to PL Fantasy to retrive your team
@@ -102,6 +133,35 @@ class MyTeamForm extends Component {
 						</Form>
 					</Modal.Body>
 					<Modal.Footer />
+				</React.Fragment>
+			);
+		}
+	}
+
+	render() {
+		const { loggedIn, teamFilterToggled } = this.props;
+
+		const buttonColor = teamFilterToggled ? '#b185b5' : '';
+
+		return (
+			<React.Fragment>
+				<Button
+					variant="secondary"
+					onClick={this.handleTeamClick}
+					style={{
+						backgroundColor: buttonColor,
+
+						// borderColor: '#b185b5',
+						height: '40px',
+						width: '150px',
+						margin: 'auto'
+					}}
+				>
+					My team
+				</Button>
+
+				<Modal show={this.state.show} onHide={this.handleClose}>
+					{this.renderModal(loggedIn)}
 				</Modal>
 			</React.Fragment>
 		);

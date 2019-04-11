@@ -1,22 +1,23 @@
 import React, { Component } from 'react';
 import Players from './components/players';
-import MyTeam from './components/myTeam';
 import NavBar from './components/navBar';
+import { ToastContainer } from 'react-toastify';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import './App.css';
 import SandBox from './components/sandBox';
+import 'react-toastify/dist/ReactToastify.css';
 
 class App extends Component {
 	render() {
 		return (
 			<React.Fragment>
+				<ToastContainer />
 				<NavBar />
 
 				<main className="container">
 					<Switch>
 						<Route path="/sandbox" component={SandBox} />
 						<Route path="/players" component={Players} />
-						<Route path="/myteam" component={MyTeam} />
 						<Redirect from="/" exact to="/players" />
 					</Switch>
 				</main>

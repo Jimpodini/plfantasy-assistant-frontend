@@ -8,7 +8,7 @@ import PlayersTable from './playersTable';
 import _ from 'lodash';
 import LoadingSpinner from './common/loadingSpinner';
 import Dropdown from 'react-bootstrap/Dropdown';
-
+import { toast } from 'react-toastify';
 import MyTeamForm from './myTeamForm';
 const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 const apiUrl = 'https://fantasy.premierleague.com/drf/elements/';
@@ -34,7 +34,9 @@ class Players extends Component {
 		filterLiked: false,
 		isLoading: true,
 		filter: 'All players',
-		teamFilter: []
+		teamFilter: [],
+		teamFilterToggled: false,
+		isLoggedIn: false
 	};
 
 	async populateOdds() {
@@ -56,7 +58,16 @@ class Players extends Component {
 
 	getPagedData = () => {
 		// items, pageNumber, pageSize
-		const { pageSize, currentPage, players: allPlayers, searchQuery, filterLiked, filter, teamFilter } = this.state;
+		const {
+			pageSize,
+			currentPage,
+			players: allPlayers,
+			searchQuery,
+			filterLiked,
+			filter,
+			teamFilter,
+			teamFilterToggled
+		} = this.state;
 
 		let filtered = allPlayers;
 
@@ -76,7 +87,7 @@ class Players extends Component {
 			filtered = filtered.filter((player) => player.position === filter);
 		}
 
-		if (teamFilter.length !== 0) {
+		if (teamFilterToggled) {
 			filtered = filtered.filter((player) => teamFilter.includes(player.id));
 		}
 
@@ -349,14 +360,26 @@ class Players extends Component {
 		this.setState({ filter });
 	};
 
+	handleLogout = () => {
+		this.setState({ isLoggedIn: false, teamFilter: [] });
+	};
+
 	async handleTeamFilter(username, password) {
 		try {
 			const myTeam = await http.get('/myteam', { params: { username: username, password: password } });
-			this.setState({ teamFilter: myTeam.data.playerIds });
+
+			toast.success('Successfully logged in. Click "My team" to toggle filter on/off');
+
+			this.setState({ teamFilter: myTeam.data.playerIds, isLoggedIn: true, teamFilterToggled: true });
 		} catch (err) {
 			console.log(err);
+			toast.error('Bad credentials. Coult not retrieve team');
 		}
 	}
+
+	toggleTeamFilter = () => {
+		this.setState({ teamFilterToggled: !this.state.teamFilterToggled });
+	};
 
 	handleSearch = (query) => {
 		this.setState({ searchQuery: query, currentPage: 1 });
@@ -389,7 +412,7 @@ class Players extends Component {
 	};
 
 	render() {
-		const { pageSize, currentPage, searchQuery, sortColumn } = this.state;
+		const { pageSize, currentPage, searchQuery, sortColumn, isLoggedIn, teamFilterToggled } = this.state;
 
 		const { players, totalCount, filteredCount } = this.getPagedData();
 
@@ -399,7 +422,13 @@ class Players extends Component {
 					<SearchForm value={searchQuery} onSearch={this.handleSearch} />
 				</div>
 				<div style={{ gridColumn: '5/7', display: 'grid' }}>
-					<MyTeamForm onLogin={this.handleTeamFilter} />
+					<MyTeamForm
+						toggleTeamFilter={this.toggleTeamFilter}
+						teamFilterToggled={teamFilterToggled}
+						onLogout={this.handleLogout}
+						loggedIn={isLoggedIn}
+						onLogin={this.handleTeamFilter}
+					/>
 				</div>
 				<div style={{ gridColumn: '7/10', display: 'grid' }}>
 					<Dropdown style={{ margin: 'auto' }}>
