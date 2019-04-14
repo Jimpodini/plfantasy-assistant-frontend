@@ -13,7 +13,6 @@ import MyTeamForm from './myTeamForm';
 const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 const apiUrl = 'https://fantasy.premierleague.com/drf/elements/';
 const apiTeamsUrl = 'https://fantasy.premierleague.com/drf/teams/';
-
 const rp = require('request-promise');
 const url = 'https://www.rotowire.com/soccer/lineups.php';
 
@@ -36,7 +35,8 @@ class Players extends Component {
 		filter: 'All players',
 		teamFilter: [],
 		teamFilterToggled: false,
-		isLoggedIn: false
+		isLoggedIn: false,
+		error: false
 	};
 
 	async populateOdds() {
@@ -281,73 +281,97 @@ class Players extends Component {
 	};
 
 	async setPlayerAttributes(player, rotowireLineups, fantasyScoutLineups, odds, fiveNextGameweeks, fixtures) {
-		player['full_name'] = player.first_name + ' ' + player.second_name;
+		try {
+			player['full_name'] = player.first_name + ' ' + player.second_name;
 
-		const teamNameOddsAPI = teams[player.team - 1].oddsName;
-		player['team_name'] = teamNameOddsAPI;
+			if (player['full_name'] === 'Fernando Luiz Rosa') {
+				player['first_name'] = 'Fernandinho';
+				player['last_name'] = 'Fernandinho';
+				player['full_name'] = 'Fernandinho';
+			}
 
-		//console.log(odds.data.data);
-		// const oddsForTeam = odds.data.data.filter((o) => o.teams.includes(teamNameOddsAPI))[0];
-		// console.log(oddsForTeam);
-		// console.log(oddsForTeam[0]);
+			const teamNameOddsAPI = teams[player.team - 1].oddsName;
+			player['team_name'] = teamNameOddsAPI;
 
-		// const nextGame = getGames(teamNameOddsAPI)[0];
-		// const index = nextGame.teams.indexOf(teamNameOddsAPI);
-		// const bet365 = nextGame.sites.filter((s) => s['site_key'] === 'bet365');
+			//console.log(odds.data.data);
+			// const oddsForTeam = odds.data.data.filter((o) => o.teams.includes(teamNameOddsAPI))[0];
+			// console.log(oddsForTeam);
+			// console.log(oddsForTeam[0]);
 
-		//const jimodds = this.getOdds();
+			// const nextGame = getGames(teamNameOddsAPI)[0];
+			// const index = nextGame.teams.indexOf(teamNameOddsAPI);
+			// const bet365 = nextGame.sites.filter((s) => s['site_key'] === 'bet365');
 
-		const allGames = odds.data;
-		const myNextGame = allGames.filter((game) => game.teams.includes(teamNameOddsAPI))[0];
-		const index = myNextGame.teams.indexOf(teamNameOddsAPI);
-		const oddsToWin = myNextGame.odds[index];
-		player['odds_to_win_next_match'] = oddsToWin;
+			//const jimodds = this.getOdds();
 
-		const positionId = player.element_type;
-		let position;
-		switch (positionId) {
-			case 1:
-				position = 'GK';
-				break;
-			case 2:
-				position = 'DEF';
-				break;
-			case 3:
-				position = 'MID';
-				break;
-			default:
-				position = 'FWD';
-				break;
+			const allGames = odds.data;
+			const myNextGame = allGames.filter((game) => game.teams.includes(teamNameOddsAPI))[0];
+			const index = myNextGame.teams.indexOf(teamNameOddsAPI);
+			const oddsToWin = myNextGame.odds[index];
+			player['odds_to_win_next_match'] = oddsToWin;
+
+			const positionId = player.element_type;
+			let position;
+			switch (positionId) {
+				case 1:
+					position = 'GK';
+					break;
+				case 2:
+					position = 'DEF';
+					break;
+				case 3:
+					position = 'MID';
+					break;
+				default:
+					position = 'FWD';
+					break;
+			}
+			player['position'] = position;
+
+			// console.log(myNextGame);
+
+			// const oddsForTeam = odds.data.data.filter((o) => o.teams.includes(teamNameOddsAPI))[0];
+			// const index = oddsForTeam.teams.indexOf(teamNameOddsAPI);
+			// const bet365 = oddsForTeam.sites.filter((s) => s['site_key'] === 'bet365');
+			//const currentDate = new Date();
+			//console.log(latestUpdate.substr(0, 10) === currentDate.substr(0, 10));
+
+			// if (bet365[0] != null) {
+			// 	const bet365odds = bet365[0].odds.h2h[index];
+			// 	//const oddsIndex = index === 0 ? 0 : 2;
+			// 	//const bet365index = getGames(teamNameOddsAPI)[0].sites.indexOf()
+			// 	//player['odds_to_win_next_match'] = getGames(teamNameOddsAPI)[0].sites[0].odds.h2h[index];
+			// 	player['odds_to_win_next_match'] = bet365odds;
+			// }
+			this.setFiveNextGameweeks(player, fiveNextGameweeks, fixtures);
+
+			const teamNameRotowire = teams[player.team - 1].rotowireName;
+			player['will_start_rotowire'] = this.willStart(
+				teamNameRotowire,
+				player.second_name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').split(' ')[0],
+				rotowireLineups
+			);
+
+			player['will_start_fantasy_scout'] = this.willStart(
+				teamNameOddsAPI,
+				`<span class="player-name">${player.second_name}</span>`,
+				fantasyScoutLineups
+			);
+			if (player['will_start_fantasy_scout'] === 'No') {
+				player['will_start_fantasy_scout'] = this.willStart(
+					teamNameOddsAPI,
+					`<span class="player-name">${player.first_name.split(' ')[0]}`,
+					fantasyScoutLineups
+				);
+			}
+
+			player['now_cost'] = player['now_cost'] / 10;
+		} catch (err) {
+			if (!this.state.error) {
+				toast.warn('Unknown error, refresh the page');
+				this.setState({ error: true });
+			}
 		}
-		player['position'] = position;
-
-		// console.log(myNextGame);
-
-		// const oddsForTeam = odds.data.data.filter((o) => o.teams.includes(teamNameOddsAPI))[0];
-		// const index = oddsForTeam.teams.indexOf(teamNameOddsAPI);
-		// const bet365 = oddsForTeam.sites.filter((s) => s['site_key'] === 'bet365');
-		//const currentDate = new Date();
-		//console.log(latestUpdate.substr(0, 10) === currentDate.substr(0, 10));
-
-		// if (bet365[0] != null) {
-		// 	const bet365odds = bet365[0].odds.h2h[index];
-		// 	//const oddsIndex = index === 0 ? 0 : 2;
-		// 	//const bet365index = getGames(teamNameOddsAPI)[0].sites.indexOf()
-		// 	//player['odds_to_win_next_match'] = getGames(teamNameOddsAPI)[0].sites[0].odds.h2h[index];
-		// 	player['odds_to_win_next_match'] = bet365odds;
-		// }
-		this.setFiveNextGameweeks(player, fiveNextGameweeks, fixtures);
-
-		const teamNameRotowire = teams[player.team - 1].rotowireName;
-		player['will_start_rotowire'] = this.willStart(teamNameRotowire, player.second_name, rotowireLineups);
-
-		player['will_start_fantasy_scout'] = this.willStart(
-			teamNameOddsAPI,
-			`title="${player.second_name}`,
-			fantasyScoutLineups
-		);
-
-		player['now_cost'] = player['now_cost'] / 10;
 
 		//player['will_start'] = this.willStart('games', 'games', rotowireLineups);
 	}
