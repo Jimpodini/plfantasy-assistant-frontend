@@ -8,7 +8,7 @@ const Pagination = ({ pageSize, numberOfItems, currentPage, onPageChange, number
 
 	return (
 		<nav>
-			<ul className="pagination pagination-lg">
+			<ul className="pagination">
 				{pages.map((page) => (
 					<li key={page} className={page > nrOfActivePages ? 'page-item disabled' : 'page-item'}>
 						<a

@@ -27,7 +27,7 @@ class PlayersTable extends Component {
 			key: 'avg_difficulty',
 			title: (
 				<HoverDiv
-					text="Avg. difficulty"
+					text="Difficulty"
 					hoverText={
 						<React.Fragment>
 							<div>

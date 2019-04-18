@@ -261,7 +261,7 @@ class Players extends Component {
 
 			const averageDifficulty = (sum / count).toFixed(1);
 
-			let styling = { borderRadius: '50%', border: 'solid black 1px', padding: '5px' };
+			let styling = { borderRadius: '50%', border: 'solid black 1px', padding: '3px' };
 			if (doubleGameweek && missingGameweek) {
 				styling.backgroundColor = '#ffdfba';
 			} else if (doubleGameweek) {

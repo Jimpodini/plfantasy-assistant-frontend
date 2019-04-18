@@ -11,22 +11,17 @@ const rp = require('request-promise');
 // style averge numbers depending if there is a double week or not within the next five games
 
 class SandBox extends Component {
-	state = { team: [] };
-
-	getTeam = () => {
-		// return http.get(
-		// 	proxyUrl + 'http://www.fplstatistics.co.uk/Home/AjaxPricesFHandler?iselRow=157&pyseltype=0&_=1555227477338'
-		// );
-		return rp(proxyUrl + 'http://www.fplstatistics.co.uk/Home/IndexWG?gridPriceData_inside=1');
-	};
+	// getTeam = () => {
+	// 	// return http.get(
+	// 	// 	proxyUrl + 'http://www.fplstatistics.co.uk/Home/AjaxPricesFHandler?iselRow=157&pyseltype=0&_=1555227477338'
+	// 	// );
+	// 	return rp(proxyUrl + 'http://www.fplstatistics.co.uk/Home/IndexWG?gridPriceData_inside=1');
+	// };
 
 	async componentDidMount() {
-		const data = await this.getTeam();
-
+		//const data = await this.getTeam();
 		// const parsed = data.match(/<td class="text-align-center">(.*?)td>/);
-
 		// console.log(parsed);
-
 		// var regex = /<td class="text-align-center">(.*?)<\/td>/g;
 		// var matches = [];
 		// var match = regex.exec(data);
@@ -34,7 +29,6 @@ class SandBox extends Component {
 		// 	matches.push(match[1]);
 		// 	match = regex.exec(data);
 		// }
-
 		// var regex2 = /<div style="text-align: center">(.*?)<\/div>/g;
 		// var matches2 = [];
 		// var match2 = regex2.exec(data);
@@ -48,9 +42,7 @@ class SandBox extends Component {
 		// for (let i = 0; i < matches.length; i = i++) {
 		// 	final = { ...final, name: matches[i + 8], prob: matches2[i] };
 		// }
-
 		// console.log(final);
-
 		// matches[32] = matches[32].replace(/&#252;/g, 'u');
 		// console.log(matches[32]);
 		// const team = data.data.aaData[20][11];
@@ -59,18 +51,16 @@ class SandBox extends Component {
 	}
 
 	render() {
-		console.log(this.state.team);
 		return (
-			<div style={{ position: 'relative', height: '100%', border: '1px solid black' }}>
-				<div
-					style={{
-						display: 'grid',
-						margin: 'auto',
-						width: '100px',
-						height: '100px',
-						backgroundColor: 'blue'
-					}}
-				/>
+			<div className="container">
+				<div className="row">
+					<div className="col-6 col-lg-12" style={{ backgroundColor: 'blue' }}>
+						Hej
+					</div>
+					<div className="col-6" style={{ backgroundColor: 'yellow' }}>
+						Hej
+					</div>
+				</div>
 			</div>
 		);
 	}

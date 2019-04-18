@@ -37,3 +37,42 @@ code {
 * {
 	grid-column: 1 / 13;
 }
+
+/* Mobile Styles */
+@media only screen and (max-width: 400px) {
+	table {
+		font-size: 5px;
+	}
+
+	th,
+	td {
+		padding: 3px !important;
+		height: 20px !important;
+		vertical-align: middle !important;
+	}
+
+	.pagination .page-link {
+		padding: .12rem .24rem;
+		font-size: 0.7rem;
+		line-height: 1.5;
+	}
+}
+
+/* Tablet Styles */
+@media only screen and (min-width: 401px) and (max-width: 960px) {
+	table {
+		font-size: 9px;
+	}
+
+	th,
+	td {
+		padding: 3px !important;
+	}
+}
+
+/* Desktop Styles */
+@media only screen and (min-width: 961px) {
+	table {
+		font-size: 13px;
+	}
+}
