@@ -41,7 +41,7 @@ code {
 /* Mobile Styles */
 @media only screen and (max-width: 400px) {
 	table {
-		font-size: 4px;
+		font-size: 6px;
 	}
 
 	th,
@@ -64,6 +64,10 @@ code {
 	.navbarDropdown {
 		margin-top: 8px;
 	}
+
+	.paginationContainer {
+		display: none;
+	}
 }
 
 /* Tablet Styles */
@@ -79,6 +83,10 @@ code {
 
 	.navbarDropdown {
 		margin-top: 8px;
+	}
+
+	.paginationContainer {
+		display: inline-block;
 	}
 }
 
@@ -101,5 +109,9 @@ code {
 
 	.navbarDropdown {
 		margin-top: 16px;
+	}
+
+	.paginationContainer {
+		display: inline-block;
 	}
 }

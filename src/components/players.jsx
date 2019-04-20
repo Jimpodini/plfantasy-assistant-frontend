@@ -511,11 +511,7 @@ class Players extends Component {
 						<Row>
 							<Col xs="12">
 								<div style={{ textAlign: 'center' }}>
-									<div
-										style={{
-											display: 'inline-block'
-										}}
-									>
+									<div className="paginationContainer">
 										<Pagination
 											pageSize={pageSize}
 											numberOfItems={totalCount}

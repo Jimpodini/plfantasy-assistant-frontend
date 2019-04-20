@@ -20,9 +20,9 @@ class PlayersTable extends Component {
 	columns = [
 		{ key: 'name', title: 'Name', path: 'full_name' },
 		{ key: 'team', title: 'Team', path: 'team_name' },
-		{ key: 'position', title: 'Position', path: 'position' },
-		{ key: 'price', title: 'Price (£)', path: 'now_cost' },
-		{ key: 'ict_index', title: 'ICT Index', path: 'ict_index' },
+		{ key: 'position', title: 'Pos.', path: 'position' },
+		{ key: 'price', title: '£', path: 'now_cost' },
+		{ key: 'ict_index', title: 'ICT', path: 'ict_index' },
 		{
 			key: 'avg_difficulty',
 			title: (
@@ -57,12 +57,12 @@ class PlayersTable extends Component {
 		},
 		{
 			key: 'starter_1',
-			title: <HoverDiv text="Starter 1" hoverText="Source: https://www.rotowire.com/soccer/lineups.php" />,
+			title: <HoverDiv text="Starts 1" hoverText="Source: https://www.rotowire.com/soccer/lineups.php" />,
 			path: 'will_start_rotowire'
 		},
 		{
 			key: 'starter_2',
-			title: <HoverDiv text="Starter 2" hoverText="Source: https://www.fantasyfootballscout.co.uk/team-news/" />,
+			title: <HoverDiv text="Starts 2" hoverText="Source: https://www.fantasyfootballscout.co.uk/team-news/" />,
 			path: 'will_start_fantasy_scout'
 		},
 		{
