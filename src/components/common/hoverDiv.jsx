@@ -36,7 +36,11 @@ class HoverDiv extends Component {
 				<div onMouseOver={this.handleMouseHover} onMouseOut={this.handleMouseHover}>
 					<a style={this.props.style}>{this.props.text}</a>
 				</div>
-				{this.state.isHovering && <div style={styles}>{this.props.hoverText}</div>}
+				{this.state.isHovering && (
+					<div style={styles} className="hoverDiv">
+						{this.props.hoverText}
+					</div>
+				)}
 			</div>
 		);
 	}

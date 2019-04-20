@@ -1,3 +1,7 @@
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
 import React, { Component } from 'react';
 import http from '../services/httpService';
 import Pagination from './common/pagination';
@@ -441,64 +445,98 @@ class Players extends Component {
 		const { players, totalCount, filteredCount } = this.getPagedData();
 
 		return (
-			<div id="container">
-				<div style={{ gridColumn: '1/5' }}>
-					<SearchForm value={searchQuery} onSearch={this.handleSearch} />
-				</div>
-				<div style={{ gridColumn: '5/7', display: 'grid' }}>
-					<MyTeamForm
-						toggleTeamFilter={this.toggleTeamFilter}
-						teamFilterToggled={teamFilterToggled}
-						onLogout={this.handleLogout}
-						loggedIn={isLoggedIn}
-						onLogin={this.handleTeamFilter}
-					/>
-				</div>
-				<div style={{ gridColumn: '7/10', display: 'grid' }}>
-					<Dropdown style={{ margin: 'auto' }}>
-						<Dropdown.Toggle
-							variant="secondary"
-							id="dropdown-basic"
-							style={{ width: '250px', height: '40px' }}
-						>
-							{this.state.filter}
-						</Dropdown.Toggle>
+			<Container>
+				{this.state.isLoading ? (
+					<div style={{ textAlign: 'center' }}>
+						<div style={{ display: 'inline-block' }}>
+							<LoadingSpinner isLoading={this.state.isLoading} />
+						</div>
+					</div>
+				) : (
+					<React.Fragment>
+						<Row>
+							<Col xs="12" lg="4">
+								<SearchForm value={searchQuery} onSearch={this.handleSearch} />
+							</Col>
 
-						<Dropdown.Menu>
-							<Dropdown.Item onClick={() => this.handleFilter('All players')}>All players</Dropdown.Item>
-							<Dropdown.Item onClick={() => this.handleFilter('GK')}>Goalkeepers</Dropdown.Item>
-							<Dropdown.Item onClick={() => this.handleFilter('DEF')}>Defenders</Dropdown.Item>
-							<Dropdown.Item onClick={() => this.handleFilter('MID')}>Midfielders</Dropdown.Item>
-							<Dropdown.Item onClick={() => this.handleFilter('FWD')}>Forwards</Dropdown.Item>
-						</Dropdown.Menu>
-					</Dropdown>
-				</div>
-				<div style={{ gridColumn: '10/13', display: 'grid' }}>
-					<button
-						style={{ height: '40px', width: '250px', margin: 'auto' }}
-						onClick={() => this.filterLiked()}
-					>
-						Liked players{' '}
-						<i style={{ color: 'red' }} className={this.renderLikeFilter()} aria-hidden="true" />
-					</button>
-				</div>
-				<div style={{ margin: 'auto' }}>
-					<Pagination
-						pageSize={pageSize}
-						numberOfItems={totalCount}
-						numberOfFilteredItems={filteredCount}
-						currentPage={currentPage}
-						onPageChange={this.handlePageChange}
-					/>
-				</div>
-				<PlayersTable
-					players={players}
-					onLike={this.handleLike}
-					sortColumn={sortColumn}
-					onSort={this.handleSort}
-				/>
-				<LoadingSpinner isLoading={this.state.isLoading} />
-			</div>
+							<Col xs="12" lg="2" className="navbarButton">
+								<MyTeamForm
+									toggleTeamFilter={this.toggleTeamFilter}
+									teamFilterToggled={teamFilterToggled}
+									onLogout={this.handleLogout}
+									loggedIn={isLoggedIn}
+									onLogin={this.handleTeamFilter}
+								/>
+							</Col>
+							<Col xs="12" lg="3">
+								<Dropdown>
+									<Dropdown.Toggle
+										variant="secondary"
+										id="dropdown-basic"
+										className="navbarDropdown"
+										block
+									>
+										{this.state.filter}
+									</Dropdown.Toggle>
+
+									<Dropdown.Menu>
+										<Dropdown.Item onClick={() => this.handleFilter('All players')}>
+											All players
+										</Dropdown.Item>
+										<Dropdown.Item onClick={() => this.handleFilter('GK')}>
+											Goalkeepers
+										</Dropdown.Item>
+										<Dropdown.Item onClick={() => this.handleFilter('DEF')}>
+											Defenders
+										</Dropdown.Item>
+										<Dropdown.Item onClick={() => this.handleFilter('MID')}>
+											Midfielders
+										</Dropdown.Item>
+										<Dropdown.Item onClick={() => this.handleFilter('FWD')}>Forwards</Dropdown.Item>
+									</Dropdown.Menu>
+								</Dropdown>
+							</Col>
+							<Col xs="12" lg="3" className="navbarButton">
+								<Button className="mt-2 mb-2" variant="light" onClick={() => this.filterLiked()} block>
+									Liked players{' '}
+									<i
+										style={{ color: 'red' }}
+										className={this.renderLikeFilter()}
+										aria-hidden="true"
+									/>
+								</Button>
+							</Col>
+						</Row>
+
+						<Row>
+							<Col xs="12">
+								<div style={{ textAlign: 'center' }}>
+									<div
+										style={{
+											display: 'inline-block'
+										}}
+									>
+										<Pagination
+											pageSize={pageSize}
+											numberOfItems={totalCount}
+											numberOfFilteredItems={filteredCount}
+											currentPage={currentPage}
+											onPageChange={this.handlePageChange}
+										/>
+									</div>
+								</div>
+							</Col>
+						</Row>
+
+						<PlayersTable
+							players={players}
+							onLike={this.handleLike}
+							sortColumn={sortColumn}
+							onSort={this.handleSort}
+						/>
+					</React.Fragment>
+				)}
+			</Container>
 		);
 	}
 }

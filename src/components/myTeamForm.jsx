@@ -149,13 +149,15 @@ class MyTeamForm extends Component {
 					variant="secondary"
 					onClick={this.handleTeamClick}
 					style={{
-						backgroundColor: buttonColor,
+						backgroundColor: buttonColor
+						// display: 'inline-block',
+						// marginTop: 'auto',
+						// marginBottom: 'auto'
 
 						// borderColor: '#b185b5',
-						height: '40px',
-						width: '150px',
-						margin: 'auto'
+						//height: '40px',
 					}}
+					block
 				>
 					My team
 				</Button>
