@@ -41,7 +41,7 @@ code {
 /* Mobile Styles */
 @media only screen and (max-width: 400px) {
 	table {
-		font-size: 5px;
+		font-size: 4px;
 	}
 
 	th,
@@ -53,8 +53,8 @@ code {
 
 	.pagination .page-link {
 		padding: .12rem .24rem;
-		font-size: 0.7rem;
-		line-height: 1.5;
+		font-size: 0.4rem;
+		line-height: 1;
 	}
 
 	.hoverDiv {
