@@ -55,7 +55,6 @@ code {
 		padding: .12rem .24rem;
 		font-size: 0.4rem;
 		line-height: 1;
-		display: none;
 	}
 
 	.hoverDiv {
@@ -66,9 +65,9 @@ code {
 		margin-top: 8px;
 	}
 
-	.paginationContainer {
+	/* .paginationContainer {
 		display: none;
-	}
+	} */
 }
 
 /* Tablet Styles */
