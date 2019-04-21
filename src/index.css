@@ -65,9 +65,9 @@ code {
 		margin-top: 8px;
 	}
 
-	/* .paginationContainer {
-		display: none;
-	} */
+	.paginationContainer {
+		display: inline-block;
+	}
 }
 
 /* Tablet Styles */
