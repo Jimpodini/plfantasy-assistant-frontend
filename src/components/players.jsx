@@ -511,7 +511,7 @@ class Players extends Component {
 						<Row>
 							<Col xs="12">
 								<div style={{ textAlign: 'center' }}>
-									<div className="paginationContainer">
+									<div className="d-none d-sm-inline-block">
 										<Pagination
 											pageSize={pageSize}
 											numberOfItems={totalCount}
@@ -520,6 +520,18 @@ class Players extends Component {
 											onPageChange={this.handlePageChange}
 										/>
 									</div>
+								</div>
+								<div
+									className="btn-group btn-block mb-3 d-sm-none"
+									role="group"
+									aria-label="Basic example"
+								>
+									<button type="button" className="btn btn-secondary">
+										<i className="fas fa-angle-double-left" />
+									</button>
+									<button type="button" className="btn btn-secondary">
+										<i className="fas fa-angle-double-right" />
+									</button>
 								</div>
 							</Col>
 						</Row>

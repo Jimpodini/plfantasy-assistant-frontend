@@ -65,9 +65,9 @@ code {
 		margin-top: 8px;
 	}
 
-	.paginationContainer {
-		display: inline-block;
-	}
+	/* .paginationContainer {
+		display: none;
+	} */
 }
 
 /* Tablet Styles */
@@ -85,9 +85,9 @@ code {
 		margin-top: 8px;
 	}
 
-	.paginationContainer {
+	/* .paginationContainer {
 		display: inline-block;
-	}
+	} */
 }
 
 /* Desktop Styles */
@@ -111,7 +111,7 @@ code {
 		margin-top: 16px;
 	}
 
-	.paginationContainer {
+	/* .paginationContainer {
 		display: inline-block;
-	}
+	} */
 }

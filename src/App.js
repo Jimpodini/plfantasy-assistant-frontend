@@ -3,7 +3,7 @@ import Players from './components/players';
 import NavBar from './components/navBar';
 import { ToastContainer } from 'react-toastify';
 import { Route, Redirect, Switch } from 'react-router-dom';
-import './App.css';
+//import './App.scss';
 import SandBox from './components/sandBox';
 import 'react-toastify/dist/ReactToastify.css';
 

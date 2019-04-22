@@ -121,6 +121,7 @@ class MyTeamForm extends Component {
 								variant="primary"
 								style={{
 									backgroundColor: '#29163A',
+									color: 'white',
 									borderColor: '#b185b5',
 									float: 'right',
 									margin: '0px 5px 0px 5px'
