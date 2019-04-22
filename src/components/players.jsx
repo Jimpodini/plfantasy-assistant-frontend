@@ -43,6 +43,27 @@ class Players extends Component {
 		error: false
 	};
 
+	nextPage = () => {
+		const { players, pageSize, currentPage } = this.state;
+		const totalPages = players.length / pageSize;
+
+		if (totalPages - currentPage <= 0) {
+			return;
+		} else {
+			this.setState({ currentPage: currentPage + 1 });
+		}
+	};
+
+	previousPage = () => {
+		const { currentPage } = this.state;
+
+		if (currentPage <= 1) {
+			return;
+		} else {
+			this.setState({ currentPage: currentPage - 1 });
+		}
+	};
+
 	async populateOdds() {
 		try {
 			http.post('/odds');
@@ -61,7 +82,6 @@ class Players extends Component {
 	};
 
 	getPagedData = () => {
-		// items, pageNumber, pageSize
 		const {
 			pageSize,
 			currentPage,
@@ -526,10 +546,14 @@ class Players extends Component {
 									role="group"
 									aria-label="Basic example"
 								>
-									<button type="button" className="btn btn-secondary">
+									<button
+										type="button"
+										className="btn btn-secondary"
+										onClick={() => this.previousPage()}
+									>
 										<i className="fas fa-angle-double-left" />
 									</button>
-									<button type="button" className="btn btn-secondary">
+									<button type="button" className="btn btn-secondary" onClick={() => this.nextPage()}>
 										<i className="fas fa-angle-double-right" />
 									</button>
 								</div>

@@ -41,7 +41,7 @@ code {
 /* Mobile Styles */
 @media only screen and (max-width: 400px) {
 	table {
-		font-size: 6px;
+		font-size: 5px;
 	}
 
 	th,
