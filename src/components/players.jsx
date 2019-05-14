@@ -128,7 +128,6 @@ class Players extends Component {
 			const fantasyScoutLineupsPromise = this.getLineupFantasyScout();
 			const fixturesPromise = http.get(proxyUrl + 'https://fantasy.premierleague.com/drf/fixtures/');
 			const latestUpdatePromise = http.get('/updates');
-			//const oddsPromise = this.getOdds();
 
 			let [ players, rotowireLineups, fantasyScoutLineups, fixtures, latestUpdate ] = await Promise.all([
 				playersPromise,
@@ -141,7 +140,6 @@ class Players extends Component {
 			fixtures = fixtures.data;
 			let fiveNextGameweeks = [];
 
-			//console.log(fixtures);
 			const fixturesUpcoming = fixtures.filter(
 				(fixture) => fixture.started === false && fixture.event_day != null
 			);
@@ -155,15 +153,6 @@ class Players extends Component {
 				}
 			}
 
-			//console.log(latestUpdate.data.lastUpdated);
-
-			// let [ players, rotowireLineups, fantasyScoutLineups, odds ] = await Promise.all([
-			// 	playersPromise,
-			// 	rotowireLineupsPromise,
-			// 	fantasyScoutLineupsPromise,
-			// 	oddsPromise
-			// ]
-
 			const lastUpdatedString = latestUpdate.data.lastUpdated.substr(0, 10);
 			const currentDate = new Date().toISOString().slice(0, 10);
 			const oddsUpdatedToday = lastUpdatedString === currentDate ? true : false;
@@ -173,7 +162,6 @@ class Players extends Component {
 			const odds = await http.get('/odds');
 
 			players = players.data;
-			// players.map((player) => this.setPlayerAttributes(player, rotowireLineups, fantasyScoutLineups, odds));
 			players.map((player) =>
 				this.setPlayerAttributes(
 					player,
@@ -203,8 +191,6 @@ class Players extends Component {
 	willStart = (team, name, lineup) => {
 		if (lineup.includes(`${team}`)) {
 			if (lineup.includes(`${name}`)) {
-				//return 'Yes';
-				//console.log('team and name found');
 				return 'Yes';
 			} else {
 				return 'No';
@@ -215,12 +201,6 @@ class Players extends Component {
 	};
 
 	setFiveNextGameweeks = (player, fiveNextGameweeks, fixtures) => {
-		// const fixtures = this.state.fixtures.filter(
-		// 	(fixture) => fixture.started === false && fixture.event_day != null
-		// );
-
-		//let formattedFixtures = [];
-
 		const teamID = player.team;
 
 		let teamNextFiveGames = [];
@@ -243,7 +223,6 @@ class Players extends Component {
 				];
 			} else {
 				if (game.length > 1) doubleGameweek = true;
-				//const opponentID = game[0].team_h === 1 ? game[0].team_a : game[0].team_h;
 				game.forEach((g) => {
 					let opponentID;
 					let difficultyLevel;
@@ -294,13 +273,12 @@ class Players extends Component {
 				styling.backgroundColor = '#ffb3ba';
 			}
 
-			// const averageDifficulty =
-			// 	teamNextFiveGames.reduce((total, number) => total + number) / teamNextFiveGames.length;
-			//console.log(gamesInfo);
 			player['avg_difficulty'] = averageDifficulty;
 			player['double_gameweek'] = doubleGameweek;
 			player['styling'] = styling;
 			player['games_info'] = gamesInfo;
+		} else {
+			player['avg_difficulty'] = 'No games';
 		}
 	};
 
@@ -317,22 +295,15 @@ class Players extends Component {
 			const teamNameOddsAPI = teams[player.team - 1].oddsName;
 			player['team_name'] = teamNameOddsAPI;
 
-			//console.log(odds.data.data);
-			// const oddsForTeam = odds.data.data.filter((o) => o.teams.includes(teamNameOddsAPI))[0];
-			// console.log(oddsForTeam);
-			// console.log(oddsForTeam[0]);
-
-			// const nextGame = getGames(teamNameOddsAPI)[0];
-			// const index = nextGame.teams.indexOf(teamNameOddsAPI);
-			// const bet365 = nextGame.sites.filter((s) => s['site_key'] === 'bet365');
-
-			//const jimodds = this.getOdds();
-
 			const allGames = odds.data;
-			const myNextGame = allGames.filter((game) => game.teams.includes(teamNameOddsAPI))[0];
-			const index = myNextGame.teams.indexOf(teamNameOddsAPI);
-			const oddsToWin = myNextGame.odds[index];
-			player['odds_to_win_next_match'] = oddsToWin;
+			if (allGames.length > 0) {
+				const myNextGame = allGames.filter((game) => game.teams.includes(teamNameOddsAPI))[0];
+				const index = myNextGame.teams.indexOf(teamNameOddsAPI);
+				const oddsToWin = myNextGame.odds[index];
+				player['odds_to_win_next_match'] = oddsToWin;
+			} else {
+				player['odds_to_win_next_match'] = 'N/A';
+			}
 
 			const positionId = player.element_type;
 			let position;
@@ -352,21 +323,6 @@ class Players extends Component {
 			}
 			player['position'] = position;
 
-			// console.log(myNextGame);
-
-			// const oddsForTeam = odds.data.data.filter((o) => o.teams.includes(teamNameOddsAPI))[0];
-			// const index = oddsForTeam.teams.indexOf(teamNameOddsAPI);
-			// const bet365 = oddsForTeam.sites.filter((s) => s['site_key'] === 'bet365');
-			//const currentDate = new Date();
-			//console.log(latestUpdate.substr(0, 10) === currentDate.substr(0, 10));
-
-			// if (bet365[0] != null) {
-			// 	const bet365odds = bet365[0].odds.h2h[index];
-			// 	//const oddsIndex = index === 0 ? 0 : 2;
-			// 	//const bet365index = getGames(teamNameOddsAPI)[0].sites.indexOf()
-			// 	//player['odds_to_win_next_match'] = getGames(teamNameOddsAPI)[0].sites[0].odds.h2h[index];
-			// 	player['odds_to_win_next_match'] = bet365odds;
-			// }
 			this.setFiveNextGameweeks(player, fiveNextGameweeks, fixtures);
 
 			const teamNameRotowire = teams[player.team - 1].rotowireName;
@@ -392,12 +348,11 @@ class Players extends Component {
 			player['now_cost'] = player['now_cost'] / 10;
 		} catch (err) {
 			if (!this.state.error) {
+				console.log(err);
 				toast.warn('Unknown error, refresh the page');
 				this.setState({ error: true });
 			}
 		}
-
-		//player['will_start'] = this.willStart('games', 'games', rotowireLineups);
 	}
 
 	handlePageChange = (page) => {
