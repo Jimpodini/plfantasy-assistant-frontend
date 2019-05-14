@@ -1,5 +1,19 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## PL Fantasy Assistant
+
+Use PL Fantasy Assistant to:
+- see which players are predicted to start in their next game (column "Starts 1" & "Starts 2)
+- see the average difficulty in opposition over the five next games for every player
+- see which players have a double gameweek within the five next games
+- see which players have a missing gameweek within the five next games
+- filter for your own players by using the login functionality
+- like a set of players before deciding which players to bring in to your team
+- filter on position
+- search on player names and teams
+
+Backend is available at: https://github.com/Jimpodini/plfantasy-assistant-backend
+
 ## Available Scripts
 
 In the project directory, you can run:
