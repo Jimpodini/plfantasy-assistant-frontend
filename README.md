@@ -14,6 +14,8 @@ Use PL Fantasy Assistant to:
 
 Backend is available at: https://github.com/Jimpodini/plfantasy-assistant-backend
 
+Live project: https://plfantasy-assistant.herokuapp.com/players
+
 ## Available Scripts
 
 In the project directory, you can run:
