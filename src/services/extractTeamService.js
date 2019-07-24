@@ -4,6 +4,10 @@ export const teams = [
 		rotowireName: 'Arsenal'
 	},
 	{
+		oddsName: 'Aston Villa',
+		rotowireName: 'Aston Villa'
+	},
+	{
 		oddsName: 'Bournemouth',
 		rotowireName: 'Bournemouth'
 	},
@@ -16,10 +20,6 @@ export const teams = [
 		rotowireName: 'Burnley'
 	},
 	{
-		oddsName: 'Cardiff City',
-		rotowireName: 'Cardiff City'
-	},
-	{
 		oddsName: 'Chelsea',
 		rotowireName: 'Chelsea'
 	},
@@ -30,14 +30,6 @@ export const teams = [
 	{
 		oddsName: 'Everton',
 		rotowireName: 'Everton'
-	},
-	{
-		oddsName: 'Fulham',
-		rotowireName: 'Fulham'
-	},
-	{
-		oddsName: 'Huddersfield Town',
-		rotowireName: 'Huddersfield Town'
 	},
 	{
 		oddsName: 'Leicester City',
@@ -58,6 +50,14 @@ export const teams = [
 	{
 		oddsName: 'Newcastle United',
 		rotowireName: 'Newcastle United'
+	},
+	{
+		oddsName: 'Norwich City',
+		rotowireName: 'Norwich City'
+	},
+	{
+		oddsName: 'Sheffield United',
+		rotowireName: 'Sheffield United'
 	},
 	{
 		oddsName: 'Southampton',

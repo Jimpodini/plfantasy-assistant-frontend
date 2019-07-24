@@ -140,9 +140,7 @@ class Players extends Component {
 			fixtures = fixtures.data;
 			let fiveNextGameweeks = [];
 
-			const fixturesUpcoming = fixtures.filter(
-				(fixture) => fixture.started === false && fixture.event_day != null
-			);
+			const fixturesUpcoming = fixtures.filter((fixture) => fixture.started === false);
 
 			for (let i = 0; i < fixturesUpcoming.length; i++) {
 				const teamFixture = fixturesUpcoming[i];
