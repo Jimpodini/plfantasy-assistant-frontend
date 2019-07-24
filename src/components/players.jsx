@@ -15,8 +15,8 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { toast } from 'react-toastify';
 import MyTeamForm from './myTeamForm';
 const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-const apiUrl = 'https://fantasy.premierleague.com/drf/elements/';
-const apiTeamsUrl = 'https://fantasy.premierleague.com/drf/teams/';
+const apiUrl = 'https://fantasy.premierleague.com/api/bootstrap-static/';
+const apiTeamsUrl = 'https://fantasy.premierleague.com/api/bootstrap-static/';
 const rp = require('request-promise');
 const url = 'https://www.rotowire.com/soccer/lineups.php';
 
@@ -126,7 +126,7 @@ class Players extends Component {
 			const playersPromise = this.getPlayers();
 			const rotowireLineupsPromise = this.getLineupRotowire();
 			const fantasyScoutLineupsPromise = this.getLineupFantasyScout();
-			const fixturesPromise = http.get(proxyUrl + 'https://fantasy.premierleague.com/drf/fixtures/');
+			const fixturesPromise = http.get(proxyUrl + 'https://fantasy.premierleague.com/api/fixtures/');
 			const latestUpdatePromise = http.get('/updates');
 
 			let [ players, rotowireLineups, fantasyScoutLineups, fixtures, latestUpdate ] = await Promise.all([
@@ -161,7 +161,7 @@ class Players extends Component {
 
 			const odds = await http.get('/odds');
 
-			players = players.data;
+			players = players.data.elements;
 			players.map((player) =>
 				this.setPlayerAttributes(
 					player,
