@@ -138,14 +138,14 @@ class Players extends Component {
 			]);
 
 			fixtures = fixtures.data;
-			let fiveNextGameweeks = [];
 
-			const fixturesUpcoming = fixtures.filter((fixture) => fixture.started === false);
+			let fiveNextGameweeks = [];
+			const fixturesUpcoming = players.data.events.filter((gameweek) => gameweek.finished === false);
 
 			for (let i = 0; i < fixturesUpcoming.length; i++) {
 				const teamFixture = fixturesUpcoming[i];
 
-				const gameWeek = teamFixture.deadline_time_formatted;
+				const gameWeek = teamFixture.id;
 				if (!fiveNextGameweeks.includes(gameWeek) && fiveNextGameweeks.length < 5) {
 					fiveNextGameweeks = [ ...fiveNextGameweeks, gameWeek ];
 				}
@@ -209,8 +209,7 @@ class Players extends Component {
 
 		fiveNextGameweeks.forEach((gw) => {
 			const game = fixtures.filter(
-				(fixture) =>
-					fixture.deadline_time_formatted === gw && (fixture.team_a === teamID || fixture.team_h === teamID)
+				(fixture) => fixture.event === gw && (fixture.team_a === teamID || fixture.team_h === teamID)
 			);
 
 			if (game.length === 0) {
