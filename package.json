@@ -10,7 +10,7 @@
 		"cheerio": "^1.0.0-rc.2",
 		"font-awesome": "^4.7.0",
 		"lodash": "^4.17.11",
-		"node-sass": "^4.11.0",
+		"node-sass": "^7.0.0",
 		"popper.js": "^1.14.7",
 		"query-string": "^6.4.2",
 		"react": "^16.8.0",
